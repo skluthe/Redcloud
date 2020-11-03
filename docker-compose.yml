@@ -54,7 +54,7 @@ services:
         - "traefik.nosec.port=80"
   
   
-  portainer:
+  yacht:
       image: selfhostedpro/yacht
       container_name: "yacht-app"
       networks:
