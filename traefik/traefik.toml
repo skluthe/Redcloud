@@ -14,7 +14,7 @@ logLevel = "DEBUG"
   address = ":80"
     [entryPoints.http.redirect]
     entryPoint = "https"
-    rule = "Path:/portainer,/files,/api"
+    rule = "Path:/,/files,/api"
   [entryPoints.https]
   address = ":443"
     [entryPoints.https.tls]
