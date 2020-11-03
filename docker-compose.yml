@@ -69,6 +69,8 @@ services:
         - "BASE_TEMPLATE=http://templates/templates.json"
         - "DISABLE_AUTH=True"
         - "THEME=Default"
+        - "ADMIN_EMAIL=admin@red.cloud"
+        - "ADMIN_PASSWORD=Redcloud"
 
       labels:
         - "traefik.frontend.rule=PathPrefixStrip:/"
