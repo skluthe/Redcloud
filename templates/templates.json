@@ -28,8 +28,8 @@
     "restart_policy": "unless-stopped",
     "categories": ["offensive", "database", "stack"],
     "labels": [
-    { "name": "traefik.frontend.rule", "value": "PathPrefixStrip:/msf" },
-    { "name": "traefik.port", "value": "4444" }
+    { "label": "traefik.frontend.rule", "value": "PathPrefixStrip:/msf" },
+    { "label": "traefik.port", "value": "4444" }
       ],
     "ports": [
       "4444:4444/tcp"
@@ -52,8 +52,8 @@
       "5555:5555/tcp"      
       ],
     "labels": [
-    { "name": "traefik.frontend.rule", "value": "PathPrefixStrip:/empire" },
-    { "name": "traefik.port", "value": "5555" }
+    { "label": "traefik.frontend.rule", "value": "PathPrefixStrip:/empire" },
+    { "label": "traefik.port", "value": "5555" }
       ]
     
   },
