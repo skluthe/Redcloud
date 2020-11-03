@@ -69,15 +69,18 @@ services:
         - "BASE_TEMPLATE=http://templates/templates.json"
         - "DISABLE_AUTH=True"
         - "THEME=Default"
+
       labels:
-        - "traefik.frontend.rule=PathPrefixStrip:/"
+        - "traefik.frontend.rule=PathPrefixStrip:/yacht"
         - "traefik.port=8000"
         - "traefik.passHostHeader=true"
         - "traefik.docker.network=redcloud_inside"
         - "traefik.backend.loadbalancer.swarm=true"
         - "traefik.backend.loadbalancer.method=drr"
-        - "traefik.sec.frontend.auth.basic.users=admin:$$apr1$$JWufnu2u$$jK16K8EczmfIBDk5p3xw6/"
         # https://github.com/containous/traefik/issues/563#issuecomment-421360934
+        - "traefik.frontend.redirect.regex=^(.*)/yacht$$"
+        - "traefik.frontend.redirect.replacement=$$1/yacht/"
+        - "traefik.frontend.rule=PathPrefix:/yacht;ReplacePathRegex: ^/yacht/(.*) /$$1"
 
 volumes:
   certs:
