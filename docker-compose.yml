@@ -69,7 +69,7 @@ services:
         - "BASE_TEMPLATE=http://templates/templates.json"
       labels:
         - "traefik.frontend.rule=PathPrefixStrip:/yacht"
-        - "traefik.port=9000"
+        - "traefik.port=8000"
         - "traefik.passHostHeader=true"
         - "traefik.docker.network=redcloud_inside"
         - "traefik.backend.loadbalancer.swarm=true"
