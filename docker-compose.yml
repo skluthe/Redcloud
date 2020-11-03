@@ -73,10 +73,10 @@ services:
         - "traefik.frontend.rule=PathPrefixStrip:/"
         - "traefik.port=8000"
         - "traefik.passHostHeader=true"
-        - "traefik."
         - "traefik.docker.network=redcloud_inside"
         - "traefik.backend.loadbalancer.swarm=true"
         - "traefik.backend.loadbalancer.method=drr"
+        - "traefik.sec.frontend.auth.basic.users=admin:$$apr1$$JWufnu2u$$jK16K8EczmfIBDk5p3xw6/"
         # https://github.com/containous/traefik/issues/563#issuecomment-421360934
 
 volumes:
