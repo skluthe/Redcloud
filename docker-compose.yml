@@ -67,7 +67,6 @@ services:
         - "COMPOSE_DIR=/compose/"
         - "LOGO=https://i.imgur.com/kfi99Po.png"
         - "BASE_TEMPLATE=http://templates/templates.json"
-        - "DISABLE_AUTH=True"
         - "THEME=Default"
         - "ADMIN_EMAIL=admin@red.cloud"
         - "ADMIN_PASSWORD=Redcloud"
