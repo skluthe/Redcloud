@@ -55,26 +55,29 @@ services:
   
   
   portainer:
-      image: portainer/portainer
-      container_name: "portainer-app"
+      image: selfhostedpro/yacht
+      container_name: "yacht-app"
       networks:
         - inside
       volumes:
         - /var/run/docker.sock:/var/run/docker.sock
-        - /tmp/portainer/data:/data
-      command:  --host=unix:///var/run/docker.sock --logo "https://i.imgur.com/kfi99Po.png" --templates "http://templates/templates.yml"
-
+        - /tmp/yacht/data:/data
+        - /tmp/compose:/compose
+      environment:
+        - "COMPOSE_DIR=/compose/"
+        - "LOGO=https://i.imgur.com/kfi99Po.png"
+        - "BASE_TEMPLATE=http://templates/templates.json"
       labels:
-        - "traefik.frontend.rule=PathPrefixStrip:/portainer"
+        - "traefik.frontend.rule=PathPrefixStrip:/yacht"
         - "traefik.port=9000"
         - "traefik.passHostHeader=true"
         - "traefik.docker.network=redcloud_inside"
         - "traefik.backend.loadbalancer.swarm=true"
         - "traefik.backend.loadbalancer.method=drr"
         # https://github.com/containous/traefik/issues/563#issuecomment-421360934
-        - "traefik.frontend.redirect.regex=^(.*)/portainer$$"
-        - "traefik.frontend.redirect.replacement=$$1/portainer/"
-        - "traefik.frontend.rule=PathPrefix:/portainer;ReplacePathRegex: ^/portainer/(.*) /$$1"
+        - "traefik.frontend.redirect.regex=^(.*)/yacht$$"
+        - "traefik.frontend.redirect.replacement=$$1/yacht/"
+        - "traefik.frontend.rule=PathPrefix:/yacht;ReplacePathRegex: ^/yacht/(.*) /$$1"
 
 volumes:
   certs:
