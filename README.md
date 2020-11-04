@@ -109,7 +109,7 @@ ___
 
 **Briefly,**
 
-`redcloud.py` deploys a [Portainer](https://www.portainer.io/) stack, **preloaded with many tool templates for your offensive engagements**, powered by Docker. Once deployed, control Redcloud with the [web interface](#screenshots). Uses [Traefik](https://traefik.io/) as reverse-proxy. Easy remote deploy to your target server using the system `ssh` or `docker-machine`. 
+`redcloud.py` deploys a [Yacht](https://github.com/Selfhostedpro/yacht) stack, **preloaded with many tool templates for your offensive engagements**, powered by Docker. Once deployed, control Redcloud with the [web interface](#screenshots). Uses [Traefik](https://traefik.io/) as reverse-proxy. Easy remote deploy to your target server using the system `ssh` or `docker-machine`. 
   
 
 * :rocket: Ever wanted to spin up a Kali in a cloud with just a few clicks?  
@@ -119,7 +119,7 @@ ___
 * :smiling_imp: Curious how you would build *the* ideal attack infrastructure?
 
 
-Use the web UI to monitor, manage, and **interact with each container**. Use the snappy web terminal just as you would with yours. Create volumes, networks and port forwards using Portainer's simple UI.
+Use the web UI to monitor, manage, and **interact with each container**. Create volumes, networks and port forwards using Yacht's simple UI.
 
 Deploy and handle all your favorite tools and technics with the power of data-center-grade internet :rocket:
 
@@ -142,7 +142,7 @@ ___
     - [Accessing files](#accessing-files)
     - [SSL Certificates](#ssl-certificates)
     - [Stopping Redcloud](#stopping-redcloud)
-    - [Portainer App Templates](#portainer-app-templates)
+    - [Yacht App Templates](#yacht-app-templates)
     - [Traefik reverse-proxy](#traefik-reverse-proxy)
     - [Redcloud security considerations](#redcloud-security-considerations)
   - [Tested deployment candidates](#tested-deployment-candidates)
@@ -159,12 +159,12 @@ ___
 
 ### Redcloud Architecture
 
-* `redcloud.py`: Starts/Stops the Web interface and App Templates, using Docker and Portainer.
-* `portainer`: Portainer web interface.
+* `redcloud.py`: Starts/Stops the Web interface and App Templates, using Docker and Yacht.
+* `yacht`: Yacht web interface.
 * `traefik`: Traefik reverse-proxy container to the web interface, api and files containers. Some templates have pre-configured routes for convenience. See the `templates.yml`. 
 * `templates`: python3 `http.server` container that feeds the App Templates. Lives in an "inside" network.
 * `cert_gen`: The [omgwtfssl](https://github.com/paulczar/omgwtfssl) container that generates the SSL certificates using common best practices.
-* https://your-server-ip/portainer: Redcloud Web interface once deployed.
+* https://your-server-ip/: Redcloud Web interface once deployed.
 * https://your-server-ip/files: Redcloud `redcloud_files` volume. You can also access the `redcloud_log` container content, protected by the same `.htpasswd` as Traefik. Default credentials: `admin:Redcloud`
 * https://your-server-ip/api: Traefik reverse-proxy health monitoring page. Shows live stats about routes, backends, return codes. Will also show reverse-callback implant data if configured through Traefik.
 
@@ -180,7 +180,7 @@ ___
    *  checks for `docker` & `docker-compose` on target machine.
    *  installs `docker` & `docker-compose` if absent.
    *  deploys the web stack on target using `docker-compose`.
-5. Once deployment is complete, `redcloud.py` will output the URL. Head over to https://your-deploy-machine-ip/portainer.
+5. Once deployment is complete, `redcloud.py` will output the URL. Head over to https://your-deploy-machine-ip/.
 6. Set username/password from the web interface.
 7. Select the endpoint (the only one on the list).
 8. Access the templates using the "App Templates" menu item on the left :rocket:
@@ -190,14 +190,12 @@ ___
 2. If you wish to add additional options, select "+ Show advanced options".
 3. Add port mapping, networking options, and volume mapping as you see fit.
 4. Select "Deploy the container".
-5. Portainer will launch the container. It may take a few minutes if it needs to fetch the image. If your server is in a data center, this step will be very fast.
+5. Yacht will launch the container. It may take a few minutes if it needs to fetch the image. If your server is in a data center, this step will be very fast.
 6. Container should be running :rocket:
-7. Portainer will redirect you to the "Containers" page. From there, you can:  
+7. Yacht will redirect you to the "Containers" page. From there, you can:  
    a. View live container logs.  
    b. Inspect container details (`docker inspect`).  
    c. View live container stats (memory/cpu/network/processes).  
-   d. Use a web shell to interact with your container.  
-   e. Depending on the App Template, use either `bash` or `sh`. Choose accordingly from the drop-down menu.  
 
 
 <p align="center">
@@ -274,22 +272,22 @@ Most SSL related configurations can be found in `traefik/traefik.toml` or the `d
 ### Stopping Redcloud
 
 You can stop Redcloud directly from the menu.  
-**Deployed App templates need to be stopped manually before stopping Redcloud.** You can stop them using the Portainer web interface, or `docker rm -f container-name`.  
-If you wish to force the Portainer containers running Redcloud to stop, simply run `docker-compose kill` inside the `redcloud/` folder.
+**Deployed App templates need to be stopped manually before stopping Redcloud.** You can stop them using the Yacht web interface, or `docker rm -f container-name`.  
+If you wish to force the Yacht containers running Redcloud to stop, simply run `docker-compose kill` inside the `redcloud/` folder.
 The *local* and *docker-machine* stop option is the same, thus they are combined in the same option.
 
 
-### Portainer App Templates
+### Yacht App Templates
 
-Redcloud uses Portainer to orchestrate and interface with the Docker engine. Portainer in itself is a fantastic project to manage Docker deployments remotely. Portainer also includes a very convenient [template system](https://portainer.readthedocs.io/en/stable/templates.html), which is the major component for our Redcloud deployment.  
-Templates can be found in `./templates/templates.yml`. Portainer fetches the template file from a dedicated container (`templates`).
+Redcloud uses Yacht to orchestrate and interface with the Docker engine. Yacht in itself is a fantastic project to manage Docker deployments remotely. Yacht also includes a very convenient [template system](https://yacht.sh/Templates/templates/), which is the major component for our Redcloud deployment.  
+Templates can be found in `./templates/templates.yml`. Yacht fetches the template file from a dedicated container (`templates`).
 
 ### Traefik reverse-proxy
 Traefik is a wonderful "cloud-native edge router". It has replaced the previous NGINX reverse-proxy setup.  
 A Traefik image is built during deployment, using the Dockerfile located in `traefik/Dockerfile`. It adds a `.htpasswd` with `admin:Redcloud` credentials.  
 
 By default, deployment spawns the following routes:  
-* `https://your-server-ip/portainer`
+* `https://your-server-ip/`
 * `https://your-server-ip/files`
 * `https://your-server-ip/api`
 
@@ -304,7 +302,7 @@ You can add additional labels that tell Traefik where to route traffic, using ei
 * `traefik/traefik.toml` file
 * `docker-compose.yml` file
 * `templates.yml` file
-* Portainer's web interface
+* Yacht's web interface
 
  See the [official documentation](https://docs.traefik.io/basics/) for more information.
 
@@ -351,11 +349,11 @@ ___
 * docker-machine deployment requires the user to already have a running docker-machine on a cloud infrastructure (such as AWS, GCP, Linode and [many others](https://docs.docker.com/machine/drivers/)). Once deployed, simply run the `eval` command as illustrated above.
 * `docker` & `docker-machine` installations require root privileges. You can downgrade privilege requirements following [the official documentation](https://docs.docker.com/install/linux/linux-postinstall/)
 * If you don't see the "App Templates" menu item right after deploying, refresh the web page and make sure you're not at the endpoint selection menu.
-* If you wish to create a new username/password combo, remove Portainer persistent data on deployment candidate: `rm -rf /opt/portainer/data`
+* If you wish to create a new username/password combo, remove Yacht persistent data on deployment candidate: `rm -rf /opt/yacht/data`
 * If you're running into python errors, you may need to install the `python3-distutils` package using `apt-get install python3-distutils` on debian/ubuntu base.
 * If you get an error when deploying an App Template saying the "container name already exists", it's probably because you're trying to deploy the same App Template without having removed a previously deployed one. Simply remove the old container with the same name, or change the name of your new container.
 * If something seems wrong with your container, the standard procedure is to check the container's logs from the web interface.
-* If running a local deployment on OSX, `portainer` will be unable to use its default volume location `/opt/`. To solve this, open the `docker-compose.yml` file, replace `/opt/portainer/data:/data` with a folder with write-access, for example: `/tmp/portainer/:/data` and create the `/tmp/portainer` directory before running Redcloud.
+* If running a local deployment on OSX, `yacht` will be unable to use its default volume location `/opt/`. To solve this, open the `docker-compose.yml` file, replace `/opt/yacht/data:/data` with a folder with write-access, for example: `/tmp/yacht/:/data` and create the `/tmp/yacht` directory before running Redcloud.
 * if you're getting issues with the web terminal, try disabling some addons, using private browsing, or try with a different browser. If all else fails, connect to your container [through the terminal](#accessing-containers-from-the-terminal).
 ___
 
@@ -366,7 +364,7 @@ ___
 * Recreate an APT infrastructure with reverse implant load-balancing, geo-stretched servers and multi-layered operations
 * Automate payload generation with Metasploit or Empire, AV bypass with gscript, served instantly through the `/files/` URI.
 * Perform your bug-bounty pipelines much faster than your competition.
-  * Launch Sniper using Portainer api when a new bug-bounty is posted, fetch logs using `/files/` URI.
+  * Launch Sniper using Yacht api when a new bug-bounty is posted, fetch logs using `/files/` URI.
 * Use the reverse proxy to cover Metasploit or Empire.
 * Launch scans behind your own Tor socks proxy.
 * View .onion site using Tor socks + Ubuntu VNC.
