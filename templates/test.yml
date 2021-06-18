@@ -1,0 +1,52 @@
+---
+- type: 1
+  title: DVWA
+  platform: linux
+  network: redcloud_default
+  description: Damn Vulnerable Web App (DVWA) is a PHP/MySQL web application that
+    is damn vulnerable
+  name: red_vuln-dvwa
+  logo: https://linuxsecurityblog.files.wordpress.com/2016/01/dvwa.jpg
+  note: 'Point your browser to http://your-docker-machine-ip:8082 to access it. To
+    start using: Generate DB from the web interface, Login using admin/password. Select
+    DVWA Security in the left menu, set your difficulty level.'
+  image: vulnerables/web-dvwa
+  restart_policy: unless-stopped
+  categories:
+  - vulnerable
+  - webserver
+  ports:
+  - 8082:80/tcp
+- type: 1
+  title: JuiceShop
+  platform: linux
+  network: redcloud_default
+  description: OWASP Juice Shop is an intentionally insecure web application written
+    entirely in JavaScript which encompasses the entire range of OWASP Top Ten and
+    other severe security flaws.
+  name: red_vuln-juiceshop
+  logo: https://www.owasp.org/images/6/66/JuiceShop_Logo.png
+  note: Point your browser to http://your-docker-machine-ip:8084 to access it.
+  image: bkimminich/juice-shop
+  restart_policy: unless-stopped
+  categories:
+  - vulnerable
+  - webserver
+  ports:
+  - 8084:3000/tcp
+- type: 1
+  title: Vulnerable Wordpress
+  platform: linux
+  network: redcloud_default
+  description: Vulnerable WordPress Installation
+  name: red_vuln-wp
+  logo: https://i.imgur.com/0DpXEE4.png
+  note: Point your browser to http://your-docker-machine-ip:8085 to access it.
+  image: wpscanteam/vulnerablewordpress
+  restart_policy: unless-stopped
+  categories:
+  - vulnerable
+  - webserver
+  ports:
+  - 8085:80/tcp
+  - 3306:3306/tcp
