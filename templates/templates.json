@@ -220,7 +220,6 @@
     "name": "red_zap-proxy",
     "note": "Since it is hosted on the same LAN as the target containers, usage should be faster. It is also possible to use the exposed remote proxy with a local instance of ZAP. Point your browser to http://your-docker-machine-ip:8081/?anonym=true&app=ZAP once done. If not, you will be asked to authenticate to a null account.",
     "interactive": true,
-    "command": "zap-webswing.sh",
     "logo": "https://www.owasp.org/images/1/11/Zap128x128.png",
     "image": "owasp/zap2docker-stable",
     "restart_policy": "unless-stopped",
@@ -610,7 +609,6 @@
       }
     ],
     "volumes": [{"container": "/data"}, {"container": "/root/.minio"}],
-    "command": "server /data"
   },
   {
     "type": 1,
